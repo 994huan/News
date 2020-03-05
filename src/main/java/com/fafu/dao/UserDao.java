@@ -19,7 +19,7 @@ public interface UserDao {
     })
     public User findUser(String username);
 
-    @Select("select * from user where query")
+    @Select("select * from user where username like #{query}")
     public List<User> findAll_User(String query);
 
     @Select("select * from user where uid = #{uid}")
@@ -30,6 +30,7 @@ public interface UserDao {
     public Integer update_User(User user);
 
     @Insert("Insert into user values(null,#{username},#{password},#{email},#{phone},#{identity})")
+    @Options(useGeneratedKeys = true,keyProperty = "uid")
     public Integer save_User(User uer);
 
     @Delete("delete from user where uid = #{uid}")

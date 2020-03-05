@@ -24,10 +24,10 @@ public interface RoleDao {
     @Select("select rid from role where identity = #{identity}")
     public Integer findRid(String identity);
 
-    @Insert("Insert into user_role values(null,#{rid}),#{uid}")
+    @Insert("Insert into user_role values(null,#{uid},#{rid})")
     public Integer save_user_role(Integer rid , Integer uid);
 
-    @Delete("delete from user_role where userid = #{uid}")
+    @Delete("delete from user_role where user_id = #{uid}")
     public Integer delete_user_role(Integer uid);
 
 }

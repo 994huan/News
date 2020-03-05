@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
         PageList_result_list pageList_result_list = new PageList_result_list();
         Map map = new HashMap();
 
+        query = Judge_Resp.getquery(query);
         PageHelper.startPage(page,rows);
         List<User> users = userDao.findAll_User(query);
         PageInfo<User> pageInfo = new PageInfo<>(users);

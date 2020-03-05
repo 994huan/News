@@ -5,6 +5,7 @@ import com.fafu.Service.UserService;
 import com.fafu.domain.Some_Data_Resp;
 import com.fafu.domain.pages.PageList_result_list;
 import com.fafu.domain.user.User;
+import com.fafu.domain.user.User_login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,13 +47,13 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/add",method = RequestMethod.POST)
-    public Some_Data_Resp save_User(@RequestParam(name = "identity") List<String> identitys,User user){
-        return userService.save_User(identitys, user);
+    public Some_Data_Resp save_User(User_login user){
+        return userService.save_User(user);
     }
     @RequestMapping(path = "/user/{uid}",method = RequestMethod.PUT)
-    public Some_Data_Resp update_User(@RequestParam(name = "identity") List<String> identitys, @PathVariable("uid") Integer uid, User user){
+    public Some_Data_Resp update_User(@PathVariable("uid") Integer uid, User_login user){
         user.setUid(uid);
-        return userService.update_User(identitys, user);
+        return userService.update_User(user);
     }
     @RequestMapping(path = "/user/{uid}",method = RequestMethod.DELETE)
     public Some_Data_Resp delete_User(@PathVariable("uid") Integer uid){

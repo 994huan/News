@@ -1,6 +1,7 @@
 package com.fafu.dao;
 
 import com.fafu.domain.user.User;
+import com.fafu.domain.user.User_login;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -20,18 +21,18 @@ public interface UserDao {
     public User findUser(String username);
 
     @Select("select * from user where username like #{query}")
-    public List<User> findAll_User(String query);
+    public List<User_login> findAll_User(String query);
 
     @Select("select * from user where uid = #{uid}")
-    public  User findId_User(Integer uid);
+    public  User_login findId_User(Integer uid);
 
     @Update("update user set username = #{username}, password =  #{password}, email = #{email}, phone = #{phone}," +
             "identity = #{identity} where uid = #{uid}")
-    public Integer update_User(User user);
+    public Integer update_User(User_login user);
 
     @Insert("Insert into user values(null,#{username},#{password},#{email},#{phone},#{identity})")
     @Options(useGeneratedKeys = true,keyProperty = "uid")
-    public Integer save_User(User uer);
+    public Integer save_User(User_login uer);
 
     @Delete("delete from user where uid = #{uid}")
     public Integer detele_User(Integer uid);

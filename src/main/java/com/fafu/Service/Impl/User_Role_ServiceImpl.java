@@ -14,14 +14,11 @@ public class User_Role_ServiceImpl implements User_Role_Service {
     @Autowired
     private RoleDao roleDao;
     @Override
-    public boolean Insert_User_Rle(List<String> identitys, Integer uid) {
+    public boolean Insert_User_Rle(String identity, Integer uid) {
         Integer num,sum = 0;
-        List<Integer> rids =  find_role(identitys);
-        for(Integer rid : rids){
-            num = roleDao.save_user_role(rid,uid);
-            sum+=num;
-        }
-        if(sum >= rids.size()){
+        Integer rid =  find_role(identity);
+        num = roleDao.save_user_role(rid,uid);
+        if(num >= 0){
             return true;
         }
         return false;
@@ -33,13 +30,10 @@ public class User_Role_ServiceImpl implements User_Role_Service {
     }
 
     @Override
-    public List<Integer> find_role(List<String> identitys) {
+    public Integer find_role(String identity) {
 
-        List<Integer> rids = new ArrayList<>();
-        for(String identity : identitys){
-            Integer num = roleDao.findRid(identity);
-            rids.add(num);
-        }
-        return rids;
+        Integer num = roleDao.findRid(identity);
+
+        return num;
     }
 }

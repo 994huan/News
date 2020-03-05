@@ -6,10 +6,7 @@ import com.fafu.dao.RoleDao;
 import com.fafu.dao.UserDao;
 import com.fafu.domain.Some_Data_Resp;
 import com.fafu.domain.pages.PageList_result_list;
-import com.fafu.domain.user.Role;
-import com.fafu.domain.user.Role_res;
-import com.fafu.domain.user.User;
-import com.fafu.domain.user.User_resp;
+import com.fafu.domain.user.*;
 import com.fafu.until.Judge_Resp;
 import com.fafu.until.String_List;
 import com.github.pagehelper.PageHelper;
@@ -59,8 +56,9 @@ public class UserServiceImpl implements UserService {
 
         query = Judge_Resp.getquery(query);
         PageHelper.startPage(page,rows);
-        List<User> users = userDao.findAll_User(query);
-        PageInfo<User> pageInfo = new PageInfo<>(users);
+        List<User_login> users = userDao.findAll_User(query);
+        System.out.println(users);
+        PageInfo<User_login> pageInfo = new PageInfo<>(users);
         pageList_result_list.setList(users);
         pageList_result_list.setPageNum(pageInfo.getPageNum());
         pageList_result_list.setTotalPage(pageInfo.getTotal());
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
         Some_Data_Resp some_data_resp = new Some_Data_Resp();
         Map map = new HashMap();
 
-        User user = userDao.findId_User(uid);
+        User_login user = userDao.findId_User(uid);
         Judge_Resp.getMap(map,user,"获取","200");
         some_data_resp.setData(user);
         some_data_resp.setMeta(map);
@@ -84,15 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Some_Data_Resp save_User(List<String> identitys, User user) {
+    public Some_Data_Resp save_User(User_login user) {
         Some_Data_Resp some_data_resp = new Some_Data_Resp();
         Map map = new HashMap();
         User_resp user_resp = new User_resp();
 
-        String identity = String_List.getString(identitys);
-        user.setIdentity(identity);
+
         Integer num = userDao.save_User(user);
-        boolean judge =  user_role_service.Insert_User_Rle(identitys,user.getUid());
+        boolean judge =  user_role_service.Insert_User_Rle(user.getIdentity(),user.getUid());
         if(num <= 0 || judge == false ) num = null;
         Judge_Resp.getMap(map,num,"添加","200");
         user_resp.setUid(user.getUid());
@@ -103,16 +100,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Some_Data_Resp update_User(List<String> identitys, User user) {
+    public Some_Data_Resp update_User(User_login user) {
         Some_Data_Resp some_data_resp = new Some_Data_Resp();
         Map map = new HashMap();
         User_resp user_resp = new User_resp();
 
-        String identity = String_List.getString(identitys);
-        user.setIdentity(identity);
         Integer num = userDao.update_User(user);
         user_role_service.delete_User_Role(user.getUid());
-        boolean judge = user_role_service.Insert_User_Rle(identitys,user.getUid());
+        boolean judge = user_role_service.Insert_User_Rle(user.getIdentity(),user.getUid());
 
         if(num < 0 || judge == false) num = null;
         Judge_Resp.getMap(map,num,"修改","200");
